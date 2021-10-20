@@ -1,0 +1,67 @@
+
+1、equals 和 hashCode
+
+引用类型使用Objects.equals()比较，基本类型使用==比较
+public boolean equals(Object Obj)
+/**
+ * 获取对象的散列码，在散列表中才有用，在其他情况下没用
+ * 如果对象相等，那么他们的hashCode() 值一定要相同；
+ * 如果两个对象hashCode() 相同，他们并不一定相等；
+ */
+ public int hashCode() 
+
+ 正确使用Map必须保证
+    1、作为Key的对象必须正确覆写equal()方法，相等的两个key实例调用equal() 必须返回true
+    2、作为key的对象还必须正确覆写hashCode() 方法，且hashCode() 方法要严格遵守以下的规范
+
+    如果两个对象相等，则两个对象的hsahCode() 必须相等
+    如果两个对象不相等，则两个对象的hashCode()  尽量不要相等
+
+
+频繁扩容对HashMap的性能影响很大。如果我们确定要使用一个容量为10000个key-value的HashMap，
+更好的方式是创建HashMap时就指定容量：
+    Map<String,Integer> map = new HashCode<>(10000);  
+
+hashCode()方法编写得越好，HashMap工作的效率就越高。
+
+EnumMap
+    如果Map的key是enum类型，推荐使用EnumMap，既保证速度，也不浪费空间。
+    使用EnumMap的时候，根据面向抽象编程的原则，应持有Map接口。
+
+TreeMap 
+    SortedMap在遍历时严格按照Key的顺序遍历，最常用的实现类是TreeMap；
+    作为SortedMap的Key必须实现Comparable接口，或者传入Comparator；
+        要严格按照compare()规范实现比较逻辑，否则，TreeMap将不能正常工作。
+
+Properties
+    读取配置文件时，一直无法读取到配置文件
+
+HashSet & TreeSet
+    放入HashSet的元素与作为HashMap的key要求相同；
+    放入TreeSet的元素与作为TreeMap的Key要求相同；
+
+Queue
+    队列Queue实现了一个先进先出（FIFO）的数据结构：
+
+    通过add()/offer()方法将元素添加到队尾；
+    通过remove()/poll()从队首获取元素并删除；
+    通过element()/peek()从队首获取元素但不删除。
+    要避免把null添加到队列。
+
+Deque
+可见面向抽象编程的一个原则就是：尽量持有接口，而不是具体的实现类。
+
+    Deque实现了一个双端队列（Double Ended Queue），它可以：
+    将元素添加到队尾或队首：addLast()/offerLast()/addFirst()/offerFirst()；
+    从队首／队尾获取元素并删除：removeFirst()/pollFirst()/removeLast()/pollLast()；
+    从队首／队尾获取元素但不删除：getFirst()/peekFirst()/getLast()/peekLast()；
+    总是调用xxxFirst()/xxxLast()以便与Queue的方法区分开；
+    避免把null添加到队列。
+
+Stack测试
+    把数字转换为16进制 需要尝试一下
+
+Iterator
+    用Iterator遍历就没有上述问题，因为Iterator对象是集合对象自己在内部创建的，
+    它自己知道如何高效遍历内部的数据集合，调用方则获得了统一的代码，编译器才能
+    把标准的for each循环自动转换为Iterator遍历。

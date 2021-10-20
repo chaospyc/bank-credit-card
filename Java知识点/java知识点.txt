@@ -1,0 +1,10 @@
+Pair<String> p = new Pair<> {"Hello","world"};
+String first = p.getFirst();
+String last = p.getLast();
+
+
+Pair p = new Pair("Hello","world");
+String first = (String) p.getFirst();
+String last = (String) p.getLast();
+
+

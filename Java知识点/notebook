@@ -254,3 +254,13 @@ Class[] getInterfaces()：获取当前类实现的所有接口。
 BootstrapLoader看是不是自己已缓存或者能加载的，有就加载，没有再返回 extLoader，extLoader
  能加载就加载，不能的话再返回给 appLoader 加载，再返回的路中，谁能加载，加载的同时也加缓存里。
  正是由于不停的找自己父级，所以才有 Parents 加载机制，翻译过来叫 双亲委派机制
+
+
+ 因此，我们总结一下equals()方法的正确编写方法：
+
+先确定实例“相等”的逻辑，即哪些字段相等，就认为实例相等；
+用instanceof判断传入的待比较的Object是不是当前类型，如果是，继续比较，否则，返回false；
+对引用类型用Objects.equals()比较，对基本类型直接用==比较。
+使用Objects.equals()比较两个引用类型是否相等的目的是省去了判断null的麻烦。两个引用类型都是null时它们也是相等的。
+
+如果不调用List的contains()、indexOf()这些方法，那么放入的元素就不需要实现equals()方法。

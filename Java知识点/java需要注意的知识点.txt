@@ -65,3 +65,95 @@ Iterator
     用Iterator遍历就没有上述问题，因为Iterator对象是集合对象自己在内部创建的，
     它自己知道如何高效遍历内部的数据集合，调用方则获得了统一的代码，编译器才能
     把标准的for each循环自动转换为Iterator遍历。
+
+Colletions
+    Collections提供了一系列方法来创建空集合：
+
+    创建空List：List<T> emptyList()
+    创建空Map：Map<K, V> emptyMap()
+    创建空Set：Set<T> emptySet()
+    线程安全集合
+        Collections还提供了一组方法，可以把线程不安全的集合变为线程安全的集合：
+
+        变为线程安全的List：List<T> synchronizedList(List<T> list)
+        变为线程安全的Set：Set<T> synchronizedSet(Set<T> s)
+        变为线程安全的Map：Map<K,V> synchronizedMap(Map<K,V> m)
+
+IO
+    Java标准库的java.io.InputStream定义了所有输入流的超类：
+    FileInputStream实现了文件流输入；
+    ByteArrayInputStream在内存中模拟一个字节流输入。
+    总是使用try(resource)来保证InputStream正确关闭。
+
+        public class ReadAsStringTest {
+        public static void main(String[] args) throws IOException {
+            byte[] data = { 72, 101, 108, 108, 111, 33 };
+            try (InputStream input = new ByteArrayInputStream(data)){
+                String s = readAsString(input);
+                System.out.println(s);
+            }
+        }
+
+        public static String readAsString(InputStream input) throws IOException {
+            int n;
+            StringBuilder sb = new StringBuilder();
+            while ((n = input.read()) != -1){
+                sb.append((char)n);
+            }
+            return sb.toString();
+        }
+    }
+
+OutPutStream
+    OutPutStream flush()方法能够强制把缓存区的数据输出；
+
+    ByteArrayOutputStream output = new ByteArrayInputStream()
+
+    public class FileInputStream extends InputStream
+    FileInputStream 继承于 InputStream
+
+Filter模式 （Decorator
+    InputStream file = new FileInputStream("test.gz");
+    InputStream buffered = new BufferedInputStream(file);
+    InputStream gzip = new GZIPInputStream(buffered);
+    将各种子类的功能交叉引用；
+    可以把一个InputStream和任意个FilterInputStream组合；
+    可以把一个OutputStream和任意个FilterOutputStream组合
+
+    在叠加多个FileterInputStream，我们只需要持有最外层的InputStream，在最外层的InputStream关闭时，内层的InputStream
+    的Close方法也会被自动调用，不会存在自动调用；
+
+
+Reader 定义了所有字符输入流的超类
+    FileReader 实现了文件字符流输入，输入时需要指定编码
+    CharArrayReader 和 StringReader 可以在内存中模拟一个字符输入；
+    使用try (resource)保证Reader正确关闭。
+
+    try(Reader reader = new InputStreamReader(new FileInputStream("src\\IOTest\\Notebo.txt"))){
+        System.out.println(reader.read());
+    }
+    InputStream input = new FileInputStream("src\\IOTest\\Notebo.txt");
+    Reader reader = new InputStreamReader(input,StandardCharsets.UTF_8);
+    System.out.println(reader.read());
+
+Writer 定义了所有字符输出流的超类
+    FileWriter实现了文件字符流输出；
+
+    CharArrayWriter和StringWriter在内存中模拟一个字符流输出。
+
+    public class WriteTest {
+        public static void main(String[] args) throws IOException {
+            try(CharArrayWriter writer = new CharArrayWriter()){
+                writer.write(65);
+                writer.write(66);
+                char[] data = writer.toCharArray();
+            }
+        }
+    }
+
+Files and Paths
+    Java 7开始，提供了Files和Paths这两个工具类
+    PS: Files提供的读写方法，受内存限制，只能读写小文件，例如配置文件等，不可一次读入几个G的大文件。
+        读写大型文件仍然要使用文件流，每次只读写一部分文件内容。
+
+

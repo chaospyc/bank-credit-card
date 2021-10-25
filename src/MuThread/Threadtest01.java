@@ -1,4 +1,4 @@
-package 多线程;
+package MuThread;
 
 /**
  * @author chaos
@@ -7,15 +7,14 @@ package 多线程;
  */
 public class Threadtest01 {
     public static void main(String[] args) {
-        Thread t = new MyThread();
+        Thread t = new Thread(new MyRunable());
         t.start();
     }
 }
 
-
-class MyThread extends Thread{
+class MyRunable implements Runnable{
     @Override
     public void run(){
-        System.out.println("start new thread");
+        System.out.println("Start new Thread");
     }
 }
